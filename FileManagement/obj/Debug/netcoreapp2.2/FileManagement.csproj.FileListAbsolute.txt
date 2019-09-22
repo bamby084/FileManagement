@@ -1,0 +1,14 @@
+D:\Projects\Upwork\FileManagement\FileManagement\bin\Debug\netcoreapp2.2\FileManagement.deps.json
+D:\Projects\Upwork\FileManagement\FileManagement\bin\Debug\netcoreapp2.2\FileManagement.runtimeconfig.json
+D:\Projects\Upwork\FileManagement\FileManagement\bin\Debug\netcoreapp2.2\FileManagement.runtimeconfig.dev.json
+D:\Projects\Upwork\FileManagement\FileManagement\bin\Debug\netcoreapp2.2\FileManagement.dll
+D:\Projects\Upwork\FileManagement\FileManagement\bin\Debug\netcoreapp2.2\FileManagement.pdb
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.csproj.CoreCompileInputs.cache
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.RazorAssemblyInfo.cache
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.RazorAssemblyInfo.cs
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.AssemblyInfoInputs.cache
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.AssemblyInfo.cs
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.RazorTargetAssemblyInfo.cache
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.dll
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.pdb
+D:\Projects\Upwork\FileManagement\FileManagement\obj\Debug\netcoreapp2.2\FileManagement.csprojResolveAssemblyReference.cache
