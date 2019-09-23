@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FileManagement.Infrastructure;
+using FileManagement.Models;
 using FileManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,10 @@ namespace FileManagement.Controllers
 
         //api/user/token
         [AllowAnonymous]
-        [HttpGet("token")]
-        public async Task<ApiResponse<string>> GetTokenAsync(string email, string password)
+        [HttpPost("token")]
+        public async Task<ApiResponse<string>> GetTokenAsync([FromBody]Credentials credentials)
         {
-            return await _userService.GetTokenAsync(email, password);
+            return await _userService.GetTokenAsync(credentials.Email, credentials.Password);
         }
     }
 }
