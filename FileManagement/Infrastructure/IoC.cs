@@ -21,7 +21,7 @@ namespace FileManagement.Infrastructure
             });
 
             services.Configure<AppSettings>(options => configuration.GetSection("AppSettings").Bind(options));
-            string secretKey = configuration.GetSection("AppSettings")["Secret"];
+            string secretKey = configuration.GetSection("AppSettings")["SecretKey"];
             byte[] key = Encoding.ASCII.GetBytes(secretKey);
 
             services.AddAuthentication(options =>
@@ -37,7 +37,11 @@ namespace FileManagement.Infrastructure
                         ValidateIssuer = false,
                         ValidateAudience = false,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key)
+                        ValidateLifetime = true,
+                        RequireExpirationTime = true,
+                        
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 

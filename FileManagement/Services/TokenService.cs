@@ -13,17 +13,17 @@ namespace FileManagement.Services
 {
     public class TokenService: ITokenService
     {
-        private readonly string _secretKey;
+        private readonly AppSettings _appSettings;
 
-        public TokenService(IOptions<AppSettings> appSettings)
+        public TokenService(IOptions<AppSettings> options)
         {
-            _secretKey = appSettings.Value.Secret;
+            _appSettings = options.Value;
         }
 
         string ITokenService.GenerateJwt(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_secretKey);
+            var key = Encoding.ASCII.GetBytes(_appSettings.SecretKey);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -31,7 +31,8 @@ namespace FileManagement.Services
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email),
                 }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Issuer = "File Management Service",
+                Expires = DateTime.UtcNow.AddMinutes(_appSettings.AccessTokenLifeTime),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 

@@ -1,8 +1,8 @@
-﻿
-namespace FileManagement.Infrastructure
+﻿namespace FileManagement.Infrastructure
 {
     public class AppSettings
     {
-        public string Secret { get; set; }
+        public string SecretKey { get; set; }
+        public int AccessTokenLifeTime { get; set; }
     }
 }
