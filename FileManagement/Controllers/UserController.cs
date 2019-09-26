@@ -21,7 +21,7 @@ namespace FileManagement.Controllers
         [HttpPost("token")]
         public async Task<ApiResponse<string>> GetTokenAsync([FromBody]Credentials credentials)
         {
-            return await _userService.GetTokenAsync(credentials.Email, credentials.Password);
+            return await _userService.GetTokenAsync(credentials.Email, credentials.SecretKey);
         }
     }
 }

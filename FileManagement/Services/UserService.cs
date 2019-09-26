@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using FileManagement.Common.Exceptions;
 using FileManagement.DataAccess;
@@ -12,7 +13,7 @@ namespace FileManagement.Services
     {
         private readonly IRepository<User> _userRepository;
         private readonly ITokenService _tokenService;
-
+        
         public UserService(IRepositoryFactory repositoryFactory, ITokenService tokenService)
         {
             _userRepository = repositoryFactory.CreateRepository<User>();
@@ -20,14 +21,14 @@ namespace FileManagement.Services
         }
 
         [AllowAnonymous]
-        public async Task<string> GetTokenAsync(string userName, string password)
+        public async Task<string> GetTokenAsync(string userName, string secret)
         {
             var users = await _userRepository.FindAsync(
-                u => u.Email.EqualsIgnoreCase(userName) && u.Password.EqualsIgnoreCase(password));
+                u => u.Email.EqualsIgnoreCase(userName) && u.ApiSecret.EqualsIgnoreCase(secret));
 
             var user = users.FirstOrDefault();
             if (user == null)
-                throw new NotFoundException("Invalid email or password.");
+                throw new NotFoundException("Invalid email or secret key.");
 
             string token = _tokenService.GenerateJwt(user);
             return await Task.FromResult(token);

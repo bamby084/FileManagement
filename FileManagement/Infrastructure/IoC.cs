@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using FileManagement.Common.Services;
 using FileManagement.DataAccess;
 using FileManagement.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,6 +47,8 @@ namespace FileManagement.Infrastructure
                     };
                 });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<ICredentialService, CredentialService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<DbContext, DatabaseContext>();

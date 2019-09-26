@@ -5,6 +5,6 @@ namespace FileManagement.Services
 {
     public interface IUserService
     {
-        Task<string> GetTokenAsync(string userName, string password);
+        Task<string> GetTokenAsync(string userName, string secret);
     }
 }

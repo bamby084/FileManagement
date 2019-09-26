@@ -9,6 +9,7 @@ using FileManagement.DataAccess;
 using FileManagement.DataAccess.Entities;
 using FileManagement.ExtensionMethods;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace FileManagement.Services
 {
@@ -23,33 +24,15 @@ namespace FileManagement.Services
 
         public async Task UploadFile(UserFile fileInfo)
         {
-            var file = await FindFile(fileInfo.UserId, fileInfo.FileName);
-            if (file != null)
-            {
-                file.FileContent = fileInfo.FileContent;
-                _fileRepository.Update(file);
-                await _fileRepository.SaveChangesAsync();
-            }
-            else
-            {
-                fileInfo.Id = Guid.NewGuid();
-                await _fileRepository.AddAsync(fileInfo);
-                await _fileRepository.SaveChangesAsync();
-            }
+            fileInfo.Id = Guid.NewGuid();
+            await _fileRepository.AddAsync(fileInfo);
+            await _fileRepository.SaveChangesAsync();
         }
 
         public async Task<string> GetFileAsync(Guid userId, string fileName)
         {
             byte[] content = await GetFileAsBytesAsync(userId, fileName);
             return Encoding.ASCII.GetString(content);
-        }
-
-        private async Task<UserFile> FindFile(Guid userId, string fileName)
-        {
-            var files = await _fileRepository.FindAsync(
-                f => f.UserId == userId && f.FileName.EqualsIgnoreCase(fileName));
-
-            return files.FirstOrDefault();
         }
 
         public UserFile GetFileFromRequest(IFormFile formFile, Guid userId, string fileName = null)
@@ -84,6 +67,13 @@ namespace FileManagement.Services
                 throw new NotFoundException("File not found.");
 
             return file.FileContent;
+        }
+
+        private async Task<UserFile> FindFile(Guid userId, string fileName)
+        {
+            return await _fileRepository.AsQueryable()
+                .Where(f => f.UserId == userId && f.FileName.EqualsIgnoreCase(fileName))
+                .OrderByDescending(f => f.CreatedOn).FirstOrDefaultAsync();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace FileManagement.DataAccess.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            
+            builder.ToTable("UserAccount");
         }
     }
 }

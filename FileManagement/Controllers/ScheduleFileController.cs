@@ -1,20 +1,18 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using FileManagement.Infrastructure;
 using FileManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using FileManagement.ExtensionMethods;
 using Microsoft.AspNetCore.Http;
 
 namespace FileManagement.Controllers
 {
-    [Route("api/file")]
-    public class FileController: ApiController
+    [Route("api/schedule-file")]
+    public class ScheduleFileController: ApiController
     {
         private readonly IFileService _fileService;
         
-        public FileController(IFileService fileService, ITokenService tokenService)
+        public ScheduleFileController(IFileService fileService)
         {
             _fileService = fileService;
         }
@@ -22,15 +20,13 @@ namespace FileManagement.Controllers
         [HttpGet("{fileName}/content")]
         public async Task<ApiResponse<string>> GetFileContentAsync(string fileName)
         {
-            Guid userId = Request.GetUserId();
-            return await _fileService.GetFileAsync(userId, fileName);
+            return await _fileService.GetFileAsync(UserId, fileName);
         }
 
         [HttpGet("{fileName}")]
         public async Task<IActionResult> DownloadFileAsync(string fileName)
         {
-            Guid userId = Request.GetUserId();
-            byte[] content = await _fileService.GetFileAsBytesAsync(userId, fileName);
+            byte[] content = await _fileService.GetFileAsBytesAsync(UserId, fileName);
 
             var memStream = new MemoryStream(content);
             return File(memStream, "application/octet-stream", fileName);
@@ -39,10 +35,10 @@ namespace FileManagement.Controllers
         [HttpPost]
         public async Task<ApiResponse> UploadFile(IFormFile formFile, string fileName)
         {
-            Guid userId = Request.GetUserId();
-            var file = _fileService.GetFileFromRequest(formFile, userId, fileName);
+            var file = _fileService.GetFileFromRequest(formFile, UserId, fileName);
+            file.FileType = "Schedule";
+            
             await _fileService.UploadFile(file);
-
             return ApiResponse.NoContent;
         }
     }

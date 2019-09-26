@@ -1,9 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using FileManagement.Common.Services;
 using FileManagement.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,21 +13,33 @@ namespace FileManagement.DataAccess
         where TEntity: BaseEntity
     {
         private readonly DbContext _dbContext;
+        private readonly ICredentialService _credentialService;
         private DbSet<TEntity> _entities;
-
-        public Repository(DbContext dbContext)
+        
+        public Repository(DbContext dbContext, ICredentialService credentialService)
         {
             _dbContext = dbContext;
             _entities = dbContext.Set<TEntity>();
+            _credentialService = credentialService;
         }
 
         public void Add(TEntity entity)
         {
+            entity.CreatedOn = DateTime.UtcNow;
+            entity.UpdatedOn = DateTime.UtcNow;
+            entity.CreatedBy = _credentialService.GetCurrentUserId();
+            entity.UpdatedBy = _credentialService.GetCurrentUserId();
+
             _entities.Add(entity);
         }
 
         public async Task AddAsync(TEntity entity)
         {
+            entity.CreatedOn = DateTime.UtcNow;
+            entity.UpdatedOn = DateTime.UtcNow;
+            entity.CreatedBy = _credentialService.GetCurrentUserId();
+            entity.UpdatedBy = _credentialService.GetCurrentUserId();
+
             await _entities.AddAsync(entity);
         }
 
@@ -68,6 +80,9 @@ namespace FileManagement.DataAccess
 
         public void Update(TEntity entity)
         {
+            entity.UpdatedBy = _credentialService.GetCurrentUserId();
+            entity.UpdatedOn = DateTime.UtcNow;
+
             _entities.Update(entity);
         }
     }
