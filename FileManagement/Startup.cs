@@ -23,7 +23,11 @@ namespace FileManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+                {
+                    options.InputFormatters.Insert(0, new TextMediaTypeFormatter());
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAppServices(Configuration);
             services.AddSwaggerGen(c =>
             {
