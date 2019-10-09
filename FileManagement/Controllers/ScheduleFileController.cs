@@ -11,7 +11,8 @@ namespace FileManagement.Controllers
     public class ScheduleFileController: ApiController
     {
         private readonly IFileService _fileService;
-        
+        private const string FileType = "Schedule";
+
         public ScheduleFileController(IFileService fileService)
         {
             _fileService = fileService;
@@ -20,13 +21,13 @@ namespace FileManagement.Controllers
         [HttpGet("{fileName}/content")]
         public async Task<ApiResponse<string>> GetFileContentAsync(string fileName)
         {
-            return await _fileService.GetFileAsync(UserId, fileName);
+            return await _fileService.GetFileAsync(UserId, fileName, FileType);
         }
 
         [HttpGet("{fileName}")]
         public async Task<IActionResult> DownloadFileAsync(string fileName)
         {
-            byte[] content = await _fileService.GetFileAsBytesAsync(UserId, fileName);
+            byte[] content = await _fileService.GetFileAsBytesAsync(UserId, fileName, FileType);
 
             var memStream = new MemoryStream(content);
             return File(memStream, "application/octet-stream", fileName);
@@ -36,7 +37,7 @@ namespace FileManagement.Controllers
         public async Task<ApiResponse> UploadFile(IFormFile formFile, string fileName)
         {
             var file = _fileService.GetFileFromRequest(formFile, UserId, fileName);
-            file.FileType = "Schedule";
+            file.FileType = FileType;
             
             await _fileService.UploadFile(file);
             return ApiResponse.NoContent;

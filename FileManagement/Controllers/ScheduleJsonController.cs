@@ -1,15 +1,18 @@
-﻿using FileManagement.DataAccess.Entities;
+﻿using System.Text;
+using System.Threading.Tasks;
+using FileManagement.DataAccess.Entities;
 using FileManagement.Infrastructure;
 using FileManagement.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileManagement.Controllers
 {
-    [Route("api/schedule-json")]
-    public class ScheduleJsonController: ApiController
+    [Route("api/schedule")]
+    public class ScheduleJsonController : ApiController
     {
+        private const string FileType = "ScheduleJson";
+        private const string FileName = "Schedule.json";
+
         private readonly IFileService _fileService;
 
         public ScheduleJsonController(IFileService fileService)
@@ -19,16 +22,22 @@ namespace FileManagement.Controllers
 
         [HttpPost]
         [Consumes("text/plain")]
-        public async Task<ApiResponse> Schedule([FromBody]string content)
+        public async Task<ApiResponse> PostSchedule([FromBody]string content)
         {
             var file = new UserFile();
             file.UserId = UserId;
-            file.FileName = "Schedule.json";
-            file.FileType = "ScheduleJson";
+            file.FileName = FileName;
+            file.FileType = FileType;
             file.FileContent = Encoding.ASCII.GetBytes(content);
 
             await _fileService.UploadFile(file);
             return ApiResponse.NoContent;
+        }
+
+        [HttpGet]
+        public async Task<ApiResponse<string>> GetSchedule()
+        {
+            return await _fileService.GetFileAsync(UserId, FileName, FileType);
         }
     }
 }

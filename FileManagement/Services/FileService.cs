@@ -29,9 +29,9 @@ namespace FileManagement.Services
             await _fileRepository.SaveChangesAsync();
         }
 
-        public async Task<string> GetFileAsync(Guid userId, string fileName)
+        public async Task<string> GetFileAsync(Guid userId, string fileName, string fileType)
         {
-            byte[] content = await GetFileAsBytesAsync(userId, fileName);
+            byte[] content = await GetFileAsBytesAsync(userId, fileName, fileType);
             return Encoding.ASCII.GetString(content);
         }
 
@@ -60,19 +60,21 @@ namespace FileManagement.Services
             }
         }
 
-        public async Task<byte[]> GetFileAsBytesAsync(Guid userId, string fileName)
+        public async Task<byte[]> GetFileAsBytesAsync(Guid userId, string fileName, string fileType)
         {
-            var file = await FindFile(userId, fileName);
+            var file = await FindFile(userId, fileName, fileType);
             if (file == null)
                 throw new NotFoundException("File not found.");
 
             return file.FileContent;
         }
 
-        private async Task<UserFile> FindFile(Guid userId, string fileName)
+        private async Task<UserFile> FindFile(Guid userId, string fileName, string fileType)
         {
             return await _fileRepository.AsQueryable()
-                .Where(f => f.UserId == userId && f.FileName.EqualsIgnoreCase(fileName))
+                .Where(f => f.UserId == userId
+                            && f.FileName.EqualsIgnoreCase(fileName)
+                            && f.FileType.EqualsIgnoreCase(fileType))
                 .OrderByDescending(f => f.CreatedOn).FirstOrDefaultAsync();
         }
     }
