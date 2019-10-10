@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FileManagement.DataAccess.Entities;
 using Microsoft.AspNetCore.Http;
 
@@ -7,9 +6,9 @@ namespace FileManagement.Services
 {
     public interface IFileService
     {
-        Task<string> GetFileAsync(Guid userId, string fileName, string fileType);
-        Task<byte[]> GetFileAsBytesAsync(Guid userId, string fileName, string fileType);
-        Task UploadFile(UserFile fileInfo);
-        UserFile GetFileFromRequest(IFormFile file, Guid userId, string fileName = null);
+        Task<string> GetFileAsync(string fileName, string fileType);
+        Task<byte[]> GetFileAsBytesAsync(string fileName, string fileType);
+        Task UploadFile(FileIn fileInfo);
+        FileIn GetFileFromRequest(IFormFile file, string fileName = null);
     }
 }

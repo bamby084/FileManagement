@@ -14,7 +14,8 @@ namespace FileManagement.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration())
-                .ApplyConfiguration(new UserFileConfiguration());
+                .ApplyConfiguration(new FileInConfiguration())
+                .ApplyConfiguration(new FileOutConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

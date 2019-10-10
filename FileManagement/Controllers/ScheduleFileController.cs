@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace FileManagement.Controllers
 {
-    [Route("api/schedule-file")]
+    [Route("api/schedule-in-file")]
     public class ScheduleFileController: ApiController
     {
         private readonly IFileService _fileService;
@@ -21,13 +21,13 @@ namespace FileManagement.Controllers
         [HttpGet("{fileName}/content")]
         public async Task<ApiResponse<string>> GetFileContentAsync(string fileName)
         {
-            return await _fileService.GetFileAsync(UserId, fileName, FileType);
+            return await _fileService.GetFileAsync(fileName, FileType);
         }
 
         [HttpGet("{fileName}")]
         public async Task<IActionResult> DownloadFileAsync(string fileName)
         {
-            byte[] content = await _fileService.GetFileAsBytesAsync(UserId, fileName, FileType);
+            byte[] content = await _fileService.GetFileAsBytesAsync(fileName, FileType);
 
             var memStream = new MemoryStream(content);
             return File(memStream, "application/octet-stream", fileName);
@@ -36,7 +36,7 @@ namespace FileManagement.Controllers
         [HttpPost]
         public async Task<ApiResponse> UploadFile(IFormFile formFile, string fileName)
         {
-            var file = _fileService.GetFileFromRequest(formFile, UserId, fileName);
+            var file = _fileService.GetFileFromRequest(formFile, fileName);
             file.FileType = FileType;
             
             await _fileService.UploadFile(file);

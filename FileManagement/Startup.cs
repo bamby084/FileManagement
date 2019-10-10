@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using AutoMapper;
+using FileManagement.AutoMapper;
 
 namespace FileManagement
 {
@@ -29,6 +31,7 @@ namespace FileManagement
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAppServices(Configuration);
+            services.AddAutoMapper(typeof(MappingProfile));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "File Management API", Version = "v1" });

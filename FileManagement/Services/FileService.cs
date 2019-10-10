@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using FileManagement.Common.Exceptions;
 using FileManagement.DataAccess;
 using FileManagement.DataAccess.Entities;
@@ -15,27 +16,27 @@ namespace FileManagement.Services
 {
     public class FileService : IFileService
     {
-        private readonly IRepository<UserFile> _fileRepository;
+        private readonly IRepository<FileIn> _fileRepository;
         
         public FileService(IRepositoryFactory repositoryFactory)
         {
-            _fileRepository = repositoryFactory.CreateRepository<UserFile>();
+            _fileRepository = repositoryFactory.CreateRepository<FileIn>();
         }
 
-        public async Task UploadFile(UserFile fileInfo)
+        public async Task UploadFile(FileIn fileInfo)
         {
             fileInfo.Id = Guid.NewGuid();
             await _fileRepository.AddAsync(fileInfo);
             await _fileRepository.SaveChangesAsync();
         }
 
-        public async Task<string> GetFileAsync(Guid userId, string fileName, string fileType)
+        public async Task<string> GetFileAsync(string fileName, string fileType)
         {
-            byte[] content = await GetFileAsBytesAsync(userId, fileName, fileType);
+            byte[] content = await GetFileAsBytesAsync(fileName, fileType);
             return Encoding.ASCII.GetString(content);
         }
 
-        public UserFile GetFileFromRequest(IFormFile formFile, Guid userId, string fileName = null)
+        public FileIn GetFileFromRequest(IFormFile formFile,  string fileName = null)
         {
             if (formFile == null)
             {
@@ -49,9 +50,8 @@ namespace FileManagement.Services
             using (var memStream = new MemoryStream())
             {
                 formFile.CopyTo(memStream);
-                var file = new UserFile()
+                var file = new FileIn()
                 {
-                    UserId = userId,
                     FileName = fileName,
                     FileContent = memStream.ToArray()
                 };
@@ -60,20 +60,19 @@ namespace FileManagement.Services
             }
         }
 
-        public async Task<byte[]> GetFileAsBytesAsync(Guid userId, string fileName, string fileType)
+        public async Task<byte[]> GetFileAsBytesAsync(string fileName, string fileType)
         {
-            var file = await FindFile(userId, fileName, fileType);
+            var file = await FindFile(fileName, fileType);
             if (file == null)
                 throw new NotFoundException("File not found.");
 
             return file.FileContent;
         }
 
-        private async Task<UserFile> FindFile(Guid userId, string fileName, string fileType)
+        private async Task<FileIn> FindFile(string fileName, string fileType)
         {
             return await _fileRepository.AsQueryable()
-                .Where(f => f.UserId == userId
-                            && f.FileName.EqualsIgnoreCase(fileName)
+                .Where(f => f.FileName.EqualsIgnoreCase(fileName)
                             && f.FileType.EqualsIgnoreCase(fileType))
                 .OrderByDescending(f => f.CreatedOn).FirstOrDefaultAsync();
         }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FileManagement.Controllers
 {
-    [Route("api/schedule")]
+    [Route("api/schedule-in")]
     public class ScheduleJsonController : ApiController
     {
         private const string FileType = "ScheduleJson";
@@ -22,10 +22,9 @@ namespace FileManagement.Controllers
 
         [HttpPost]
         [Consumes("text/plain")]
-        public async Task<ApiResponse> PostSchedule([FromBody]string content)
+        public async Task<ApiResponse> UploadSchedule([FromBody]string content)
         {
-            var file = new UserFile();
-            file.UserId = UserId;
+            var file = new FileIn();
             file.FileName = FileName;
             file.FileType = FileType;
             file.FileContent = Encoding.ASCII.GetBytes(content);
@@ -37,7 +36,7 @@ namespace FileManagement.Controllers
         [HttpGet]
         public async Task<ApiResponse<string>> GetSchedule()
         {
-            return await _fileService.GetFileAsync(UserId, FileName, FileType);
+            return await _fileService.GetFileAsync(FileName, FileType);
         }
     }
 }

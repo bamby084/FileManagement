@@ -54,6 +54,7 @@ namespace FileManagement.Infrastructure
             services.AddScoped<DbContext, DatabaseContext>();
             services.AddScoped<IRepositoryFactory, RepositoryFactory>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IScheduleOutService, ScheduleOutService>();
         }
     }
 }
