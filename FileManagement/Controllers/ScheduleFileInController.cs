@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace FileManagement.Controllers
 {
-    [Route("api/schedule-in-file")]
-    public class ScheduleFileController: ApiController
+    [Route("api/schedule-file-in")]
+    public class ScheduleFileInController: ApiController
     {
         private readonly IFileService _fileService;
         private const string FileType = "Schedule";
 
-        public ScheduleFileController(IFileService fileService)
+        public ScheduleFileInController(IFileService fileService)
         {
             _fileService = fileService;
         }
