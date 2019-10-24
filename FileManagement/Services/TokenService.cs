@@ -1,13 +1,11 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using FileManagement.DataAccess.Entities;
 using FileManagement.Infrastructure;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace FileManagement.Services
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using FileManagement.Infrastructure;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace FileManagement.Models
@@ -8,6 +6,18 @@ namespace FileManagement.Models
     public class ScheduleIn
     {
         [JsonProperty("result")]
+        public ScheduleInResult Result { get; set; }
+    }
+
+    public class ScheduleInResult
+    {
+        [JsonProperty("project_id")]
+        public string ProjectId { get; set; }
+
+        [JsonProperty("project_name")]
+        public string ProjectName { get; set; }
+
+        [JsonProperty("task")]
         public IEnumerable<ScheduleInItem> ScheduleInItems { get; set; }
     }
 

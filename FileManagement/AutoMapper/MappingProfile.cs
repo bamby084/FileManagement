@@ -9,6 +9,7 @@ namespace FileManagement.AutoMapper
         public MappingProfile()
         {
             CreateMap<FileOut, ScheduleOut>();
+            CreateMap<User, XmlUser>();
         }
     }
 }

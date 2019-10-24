@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FileManagement.Common.Exceptions;
 using FileManagement.DataAccess;
 using FileManagement.DataAccess.Entities;
 using FileManagement.ExtensionMethods;
-using Microsoft.AspNetCore.Authorization;
 
 namespace FileManagement.Services
 {
@@ -20,7 +19,12 @@ namespace FileManagement.Services
             _tokenService = tokenService;
         }
 
-        [AllowAnonymous]
+        public async Task<IList<User>> GetAllUsersAsync()
+        {
+            var users = await _userRepository.GetAllAsync();
+            return users.ToList();
+        }
+
         public async Task<string> GetTokenAsync(string userName, string secret)
         {
             var users = await _userRepository.FindAsync(

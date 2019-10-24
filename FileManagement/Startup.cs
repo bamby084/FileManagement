@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
 using FileManagement.AutoMapper;
+using Microsoft.Extensions.Logging;
+using FileManagement.Infrastructure.Swagger;
 
 namespace FileManagement
 {
@@ -29,7 +31,8 @@ namespace FileManagement
                 {
                     options.InputFormatters.Insert(0, new TextMediaTypeFormatter());
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddXmlSerializerFormatters();
             services.AddAppServices(Configuration);
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddSwaggerGen(c =>
@@ -49,12 +52,13 @@ namespace FileManagement
             });
             services.ConfigureSwaggerGen(options =>
             {
-                options.OperationFilter<FileUploadOperation>();
+                options.OperationFilter<SwaggerFileUploadOperationFilter>();
+                options.OperationFilter<SwaggerHeaderOperationFilter>();
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +84,7 @@ namespace FileManagement
                 c.SwaggerEndpoint("../swagger/v1/swagger.json", "File Management API v1");
             });
 
+            loggerFactory.AddLog4Net();
             app.UseMvc();
         }
     }

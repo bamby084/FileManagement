@@ -8,5 +8,10 @@ namespace FileManagement.ExtensionMethods
         {
             return source.Equals(target, StringComparison.CurrentCultureIgnoreCase);
         }
+
+        public static bool IsNull(this string source)
+        {
+            return string.IsNullOrEmpty(source);
+        }
     }
 }
