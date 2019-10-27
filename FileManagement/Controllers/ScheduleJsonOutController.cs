@@ -23,17 +23,17 @@ namespace FileManagement.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResponse<IList<ScheduleOut>>> GetSchedules()
+        public async Task<ApiResponse<IList<ScheduleOut>>> GetSchedulesByProjectId(string projectId)
         {
-            var data = await _scheduleOutService.GetAllAsync();
+            var data = await _scheduleOutService.GetByProjectIdAsync(projectId);
             return data.ToList();
         }
 
         [HttpGet]
         [Route("/api/schedule-out-file")]
-        public async Task<IActionResult> DownloadScheduleOutAsync()
+        public async Task<IActionResult> DownloadScheduleOutAsync(string projectId)
         {
-            var data = await _scheduleOutService.GetAllAsync();
+            var data = await _scheduleOutService.GetByProjectIdAsync(projectId);
             dynamic jsonObject = new ExpandoObject();
             jsonObject.data = data;
             var jsonData = JsonConvert.SerializeObject(jsonObject);

@@ -39,7 +39,7 @@ namespace FileManagement.Middlewares
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             int statusCode = (int)HttpStatusCode.InternalServerError;
-            string message = exception.Message;
+            string message = "An error occurred while processing your request. Please contact administrator.";
             IList<string> errorDetails = null;
 
             if (exception is HttpException ex)
@@ -65,7 +65,8 @@ namespace FileManagement.Middlewares
                 {
                     Message = message,
                     Errors = errorDetails
-                }
+                },
+                ErrorCode = 1
             };
 
             var content = JsonConvert.SerializeObject(apiResponse,

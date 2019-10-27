@@ -1,15 +1,20 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Newtonsoft.Json;
 
 namespace FileManagement.Infrastructure
 {
     public class ApiResponse<TValue> : IConvertToActionResult
     {
         public bool Success { get; set; }
-        public int StatusCode { get; set; }
-        public TValue Data { get; set; }
 
+        public int StatusCode { get; set; }
+
+        public int ErrorCode { get; set; }
+
+        public TValue Data { get; set; }
+        
         public IActionResult Convert()
         {
             return new ObjectResult(this) { DeclaredType = typeof(ApiResponse<TValue>) };

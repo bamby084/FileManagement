@@ -7,5 +7,6 @@ namespace FileManagement.Services
     public interface IScheduleOutService
     {
         Task<IList<ScheduleOut>> GetAllAsync();
+        Task<IList<ScheduleOut>> GetByProjectIdAsync(string projectId);
     }
 }

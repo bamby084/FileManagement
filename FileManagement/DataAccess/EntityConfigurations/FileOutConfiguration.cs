@@ -13,6 +13,8 @@ namespace FileManagement.DataAccess.EntityConfigurations
             builder.Property(f => f.ActivityId).HasColumnName("activity_id");
             builder.Property(f => f.ResourceCode).HasColumnName("resource_code");
             builder.Property(f => f.ResourceQuantity).HasColumnName("resource_quantity");
+            builder.Property(f => f.ProjectId).HasColumnName("project_id");
+            builder.Property(f => f.ResourceCost).HasColumnName("resource_cost");
             builder.Ignore(f => f.LockVersion);
         }
     }
