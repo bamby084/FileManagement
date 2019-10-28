@@ -5,15 +5,15 @@ using System.Xml.Serialization;
 namespace FileManagement.Models
 {
     [XmlRoot("Users")]
-    public class UserCollection: Collection<XmlUser>
+    public class XmlUserCollection: Collection<XmlUser>
     {
-        public UserCollection()
+        public XmlUserCollection()
             :base()
         {
 
         }
 
-        public UserCollection(IList<XmlUser> users)
+        public XmlUserCollection(IList<XmlUser> users)
             : base(users)
         {
         }

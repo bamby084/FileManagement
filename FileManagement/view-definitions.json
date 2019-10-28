@@ -1,0 +1,12 @@
+{
+  "ViewDefinitions": [
+    {
+      "Name": "APITimesheetKSA",
+      "Alias": "timesheet",
+      "Root": "Timesheets",
+      "DisplayName": "Timesheet",
+      "Columns": [
+      ]
+    }
+  ],
+}

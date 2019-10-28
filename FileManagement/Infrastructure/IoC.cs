@@ -46,6 +46,7 @@ namespace FileManagement.Infrastructure
                     };
                 });
 
+            services.Configure<ViewDefinitions>(options => configuration.GetSection("ViewDefinitions").Bind(options));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICredentialService, CredentialService>();
             services.AddScoped<ITokenService, TokenService>();
@@ -54,6 +55,8 @@ namespace FileManagement.Infrastructure
             services.AddScoped<IRepositoryFactory, RepositoryFactory>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IScheduleOutService, ScheduleOutService>();
+            services.AddScoped<IDataViewService, DataViewService>();
+            services.AddScoped<IRawQueryRepository, RawQueryRepository>();
         }
     }
 }

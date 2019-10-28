@@ -22,7 +22,7 @@ namespace FileManagement.Controllers
             _scheduleOutService = scheduleOutService;
         }
 
-        [HttpGet]
+        [HttpGet("{projectId}")]
         public async Task<ApiResponse<IList<ScheduleOut>>> GetSchedulesByProjectId(string projectId)
         {
             var data = await _scheduleOutService.GetByProjectIdAsync(projectId);
@@ -30,7 +30,7 @@ namespace FileManagement.Controllers
         }
 
         [HttpGet]
-        [Route("/api/schedule-out-file")]
+        [Route("/api/schedule-out-file/{projectId}")]
         public async Task<IActionResult> DownloadScheduleOutAsync(string projectId)
         {
             var data = await _scheduleOutService.GetByProjectIdAsync(projectId);

@@ -5,7 +5,7 @@ using System;
 
 namespace FileManagement.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public abstract class ApiController: ControllerBase

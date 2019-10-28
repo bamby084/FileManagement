@@ -27,10 +27,10 @@ namespace FileManagement.Controllers
         [AllowAnonymous]
         [RequireAccessTokenHeader]
         [SwaggerHeader("Access-Token")]
-        public async Task<UserCollection> GetAllUsersAsync()
+        public async Task<XmlUserCollection> GetAllUsersAsync()
         {
             var users = await _userService.GetAllUsersAsync();
-            var userCollection = new UserCollection(_mapper.Map<IList<XmlUser>>(users));
+            var userCollection = new XmlUserCollection(_mapper.Map<IList<XmlUser>>(users));
 
             return userCollection;
         }
