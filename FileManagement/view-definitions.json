@@ -1,12 +1,16 @@
 {
   "ViewDefinitions": [
     {
-      "Name": "APITimesheetKSA",
-      "Alias": "timesheet",
-      "Root": "Timesheets",
-      "DisplayName": "Timesheet",
+      "Name": "APITimesheetKSA",//View's name in database
+      "Alias": "timesheet", //friendly name for user to consume api, for example /api/views/timesheet
+      "RootName": "Timesheets", //Xml root's name
+      "EntryName": "Timesheet",//Xml entry's name
       "Columns": [
+        {
+          "Name": "AccountNo", //Map column 'AccountNo' from the view to 'Account_Number' in xml result
+          "Alias":  "Account_Number" 
+        }
       ]
     }
-  ],
+  ]
 }

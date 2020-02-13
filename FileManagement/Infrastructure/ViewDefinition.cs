@@ -10,7 +10,7 @@ namespace FileManagement.Infrastructure
         public string Name { get; set; }
         public string Alias { get; set; }
         public string RootName { get; set; }
-        public string DisplayName { get; set; }
+        public string EntryName { get; set; }
         public IList<ColumnDefinition> Columns { get; set; }
     }
 

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace FileManagement.Controllers
 {
     [Route("api/users")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class UsersController: ApiController
     {
         private readonly IUserService _userService;
@@ -25,7 +26,7 @@ namespace FileManagement.Controllers
         [HttpGet]
         [Produces("application/xml")]
         [AllowAnonymous]
-        [RequireAccessTokenHeader]
+        [RequireAccessTokenHeader("GetAllUsers")]
         [SwaggerHeader("Access-Token")]
         public async Task<XmlUserCollection> GetAllUsersAsync()
         {

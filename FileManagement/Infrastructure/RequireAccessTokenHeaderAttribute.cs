@@ -11,12 +11,19 @@ namespace FileManagement.Infrastructure
     {
         private const string AccessTokenHeader = "Access-Token";
 
+        public string Key { get; set; }
+
+        public RequireAccessTokenHeaderAttribute(string key)
+        {
+            Key = key;
+        }
+
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             string accessToken = context.HttpContext.Request.Headers[AccessTokenHeader];
             var appSettings = (IOptions<AppSettings>)context.HttpContext.RequestServices.GetService(typeof(IOptions<AppSettings>));
             
-            if(accessToken.IsNull() || !accessToken.Equals(appSettings.Value.PrivateAccessToken))
+            if(accessToken.IsNull() || accessToken != appSettings.Value.PrivateAccessTokens.GetToken(Key))
             {
                 context.Result = new EmptyUnauthorizedResult();
             }

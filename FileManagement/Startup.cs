@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FileManagement.Infrastructure;
 using FileManagement.Middlewares;
 using Microsoft.AspNetCore.Builder;
@@ -9,8 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using AutoMapper;
 using FileManagement.AutoMapper;
+using FileManagement.Common.Exceptions;
 using Microsoft.Extensions.Logging;
 using FileManagement.Infrastructure.Swagger;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace FileManagement
 {
@@ -32,7 +35,18 @@ namespace FileManagement
                     options.InputFormatters.Insert(0, new TextMediaTypeFormatter());
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddXmlSerializerFormatters();
+                .AddXmlSerializerFormatters()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = context =>
+                    {
+                        IList<string> errors = context.ModelState.Values.SelectMany(item => item.Errors)
+                            .Select(item => item.ErrorMessage).ToList();
+
+                        throw new ValidationException(errors);
+                    };
+                });
+            
             services.AddAppServices(Configuration);
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddSwaggerGen(c =>
@@ -82,6 +96,7 @@ namespace FileManagement
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("../swagger/v1/swagger.json", "File Management API v1");
+                c.DefaultModelsExpandDepth(-1);
             });
 
             loggerFactory.AddLog4Net();
