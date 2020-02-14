@@ -9,7 +9,7 @@ namespace FileManagement.Infrastructure
 {
     public class RequireAccessTokenHeaderAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
-        private const string AccessTokenHeader = "Access-Token";
+        protected const string AccessTokenHeader = "Access-Token";
 
         public string Key { get; set; }
 
@@ -18,7 +18,7 @@ namespace FileManagement.Infrastructure
             Key = key;
         }
 
-        public void OnAuthorization(AuthorizationFilterContext context)
+        public virtual void OnAuthorization(AuthorizationFilterContext context)
         {
             string accessToken = context.HttpContext.Request.Headers[AccessTokenHeader];
             var appSettings = (IOptions<AppSettings>)context.HttpContext.RequestServices.GetService(typeof(IOptions<AppSettings>));
@@ -29,7 +29,7 @@ namespace FileManagement.Infrastructure
             }
         }
 
-        private class EmptyUnauthorizedResult : ActionResult
+        protected class EmptyUnauthorizedResult : ActionResult
         {
             public override void ExecuteResult(ActionContext context)
             {

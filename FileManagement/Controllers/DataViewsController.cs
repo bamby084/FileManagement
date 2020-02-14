@@ -21,7 +21,7 @@ namespace FileManagement.Controllers
         [HttpGet("{viewName}")]
         [Produces("application/xml")]
         [AllowAnonymous]
-        [RequireAccessTokenHeader("GetViewData")]
+        [RequireViewAccessTokenHeader("GetViewData")]
         [SwaggerHeader("Access-Token")]
         public async Task<IActionResult> GetViewDataAsync(string viewName)
         {

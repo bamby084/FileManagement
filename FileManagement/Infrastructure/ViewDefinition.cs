@@ -12,6 +12,7 @@ namespace FileManagement.Infrastructure
         public string RootName { get; set; }
         public string EntryName { get; set; }
         public IList<ColumnDefinition> Columns { get; set; }
+        public string AccessToken { get; set; }
     }
 
     public class ColumnDefinition

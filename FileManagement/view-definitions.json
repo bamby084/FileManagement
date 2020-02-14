@@ -8,9 +8,10 @@
       "Columns": [
         {
           "Name": "AccountNo", //Map column 'AccountNo' from the view to 'Account_Number' in xml result
-          "Alias":  "Account_Number" 
+          "Alias": "Account_Number"
         }
-      ]
+      ],
+      "AccessToken":  "abcdef"
     }
   ]
 }
